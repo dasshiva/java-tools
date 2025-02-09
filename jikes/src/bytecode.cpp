@@ -5225,10 +5225,6 @@ bool ByteCode::IsNop(AstBlock* block)
     return true;
 }
 
-#include <string.h>
-#define WIDE 0xC4
-#define OP_IMPDEP2 0xFF
-
 void ByteCode::EmitNewArray(unsigned num_dims, const TypeSymbol* type)
 {
     assert(num_dims);
