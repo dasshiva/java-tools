@@ -1,0 +1,5 @@
+*.o
+src/jikes
+config.cache
+config.log
+Makefile
