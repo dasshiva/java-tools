@@ -3,3 +3,8 @@ src/jikes
 config.cache
 config.log
 Makefile
+src/Makefile
+src/stamp-h1
+config.status
+src/.deps/**
+src/config.h
