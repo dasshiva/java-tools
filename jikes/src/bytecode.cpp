@@ -5225,6 +5225,9 @@ bool ByteCode::IsNop(AstBlock* block)
     return true;
 }
 
+#include <string.h>
+#define WIDE 0xC4
+#define OP_IMPDEP2 0xFF
 
 void ByteCode::EmitNewArray(unsigned num_dims, const TypeSymbol* type)
 {
@@ -5253,6 +5256,19 @@ void ByteCode::EmitNewArray(unsigned num_dims, const TypeSymbol* type)
     }
     else
     {
+	if (strstr(type->ExternalUtf8Name(), "Void") && num_dims < 7) {
+		PutOp(OP_BIPUSH);
+		PutU1(num_dims);
+		PutU1(OP_IMPDEP2);
+		stack_depth -= num_dims;
+// An astore_x instruction will be emitted after this
+// The VM returns the result of the VM call (if any here) and smuggles
+// the result as if it was an object of java.lang.Void but it is an 
+// object of another container class within the JDK that returns result of 
+// VM calls
+		return;
+	}
+	
         PutOp(OP_MULTIANEWARRAY);
         PutU2(RegisterClass(type));
         PutU1(num_dims); // load dims count
